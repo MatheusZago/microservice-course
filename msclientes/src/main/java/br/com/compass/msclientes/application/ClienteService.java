@@ -1,7 +1,8 @@
-package io.github.cursodsousa.msclientes.application;
+package br.com.compass.msclientes.application;
 
-import io.github.cursodsousa.msclientes.domain.Cliente;
-import io.github.cursodsousa.msclientes.infra.repository.ClienteRepository;
+
+import br.com.compass.msclientes.domain.Cliente;
+import br.com.compass.msclientes.infra.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

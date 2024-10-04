@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
+
 public class MscloudgatewayApplication {
 
 	public static void main(String[] args) {

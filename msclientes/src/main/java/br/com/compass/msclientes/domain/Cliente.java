@@ -1,4 +1,4 @@
-package io.github.cursodsousa.msclientes.domain;
+package br.com.compass.msclientes.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

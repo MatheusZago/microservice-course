@@ -1,6 +1,6 @@
-package io.github.cursodsousa.msclientes.infra.repository;
+package br.com.compass.msclientes.infra.repository;
 
-import io.github.cursodsousa.msclientes.domain.Cliente;
+import br.com.compass.msclientes.domain.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
