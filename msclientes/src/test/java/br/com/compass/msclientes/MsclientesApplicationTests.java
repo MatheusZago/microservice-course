@@ -1,4 +1,4 @@
-package io.github.cursodsousa.msclientes;
+package br.com.compass.msclientes;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

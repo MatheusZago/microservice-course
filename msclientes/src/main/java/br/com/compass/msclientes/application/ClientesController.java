@@ -1,7 +1,7 @@
-package io.github.cursodsousa.msclientes.application;
+package br.com.compass.msclientes.application;
 
-import io.github.cursodsousa.msclientes.application.representation.ClienteSaveRequest;
-import io.github.cursodsousa.msclientes.domain.Cliente;
+import br.com.compass.msclientes.application.representation.ClienteSaveRequest;
+import br.com.compass.msclientes.domain.Cliente;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

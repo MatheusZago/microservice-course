@@ -1,7 +1,4 @@
-package io.github.cursodsousa.msclientes.domain;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package br.com.compass.msclientes.domain;
 
 import javax.persistence.*;
 import java.util.Objects;
