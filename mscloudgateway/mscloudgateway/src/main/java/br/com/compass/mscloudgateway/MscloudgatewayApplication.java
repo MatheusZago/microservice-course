@@ -23,6 +23,7 @@ public class MscloudgatewayApplication {
 		return builder
 				.routes() //Sempre que acessar esse caminho ele redireciona para uri
 					.route(r -> r.path("/clientes/**").uri("lb://msclientes"))
+					.route(r -> r.path("/cartoes/**").uri("lb://mscartoes"))
 				.build();
 	}
 
