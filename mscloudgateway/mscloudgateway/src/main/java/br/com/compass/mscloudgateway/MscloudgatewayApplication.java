@@ -17,14 +17,12 @@ public class MscloudgatewayApplication {
 		SpringApplication.run(MscloudgatewayApplication.class, args);
 	}
 
-	@Bean //Toda vez que acessar a rota ele vai
+	@Bean
 	public RouteLocator routes(RouteLocatorBuilder builder) {
 		return builder
-				.routes() //Toda vez que receber uma requisição dessa vai jogar pro loadbalancear pra gerenciar o miscroserviço de clientes
-					.route(r -> r.path("/clientes/**").uri("lb://msclientes") )
+				.routes() //Sempre que acessar esse caminho ele redireciona para uri
+					.route(r -> r.path("/clientes/**").uri("lb://msclientes"))
 				.build();
 	}
 
 }
-
-
