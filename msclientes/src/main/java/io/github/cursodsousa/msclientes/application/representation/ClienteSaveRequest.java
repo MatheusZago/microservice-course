@@ -1,6 +1,6 @@
-package br.com.compass.msclientes.application.representation;
+package io.github.cursodsousa.msclientes.application.representation;
 
-import br.com.compass.msclientes.domain.Cliente;
+import io.github.cursodsousa.msclientes.domain.Cliente;
 
 import java.util.Objects;
 

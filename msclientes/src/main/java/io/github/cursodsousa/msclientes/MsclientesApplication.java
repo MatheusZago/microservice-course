@@ -1,4 +1,4 @@
-package br.com.compass.msclientes;
+package io.github.cursodsousa.msclientes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
