@@ -1,10 +1,14 @@
 package br.com.compass.msavaliadorcredito.application;
 
+import br.com.compass.msavaliadorcredito.application.ex.DadosClienteNotFoundException;
+import br.com.compass.msavaliadorcredito.application.ex.ErroComunicacaoMicroserviceException;
 import br.com.compass.msavaliadorcredito.domain.model.CartaoCliente;
 import br.com.compass.msavaliadorcredito.domain.model.DadosCliente;
 import br.com.compass.msavaliadorcredito.domain.model.SituacaoCliente;
 import br.com.compass.msavaliadorcredito.infra.clients.CartoesResourceClient;
 import br.com.compass.msavaliadorcredito.infra.clients.ClienteResourceClient;
+import feign.FeignException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +25,24 @@ public class AvaliadorCreditoService {
         this.cartoesClient = cartoesClient;
     }
 
-    public SituacaoCliente obterSituacaoCliente(String cpf) {
-        //ObterDadosClientes - MSCLIENTES
-        ResponseEntity<DadosCliente> dadosClienteResponse = clientesClient.dadosCliente(cpf);
-        //ObterDadosCartoes - MSCARTOES
-        ResponseEntity<List<CartaoCliente>> cartoesResponse = cartoesClient.getCartoesPorCpf(cpf);
+    public SituacaoCliente obterSituacaoCliente(String cpf) throws DadosClienteNotFoundException, ErroComunicacaoMicroserviceException {
 
-        return SituacaoCliente.builder()
-                .cliente(dadosClienteResponse.getBody())
-                .cartoes(cartoesResponse.getBody())
-                .build();
+        try{
+            ResponseEntity<DadosCliente> dadosClienteResponse = clientesClient.dadosCliente(cpf);
+            ResponseEntity<List<CartaoCliente>> cartoesResponse = cartoesClient.getCartoesPorCpf(cpf);
+
+            return SituacaoCliente.builder()
+                    .cliente(dadosClienteResponse.getBody())
+                    .cartoes(cartoesResponse.getBody())
+                    .build();
+        }catch (FeignException.FeignClientException e){
+            int status = e.status();
+            if(HttpStatus.NOT_FOUND.value() == status) {
+                throw new DadosClienteNotFoundException();
+            }
+            throw new ErroComunicacaoMicroserviceException(e.getMessage(), status);
+        }
+
     }
 
 }
