@@ -2,13 +2,12 @@ package br.com.compass.msavaliadorcredito.application;
 
 import br.com.compass.msavaliadorcredito.application.ex.DadosClienteNotFoundException;
 import br.com.compass.msavaliadorcredito.application.ex.ErroComunicacaoMicroserviceException;
+import br.com.compass.msavaliadorcredito.domain.model.DadosAvaliacao;
+import br.com.compass.msavaliadorcredito.domain.model.RetornoAvaliacaoCliente;
 import br.com.compass.msavaliadorcredito.domain.model.SituacaoCliente;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("avaliacoes-credito")
@@ -36,5 +35,18 @@ public class AvaliadorCreditoController {
         } catch (ErroComunicacaoMicroserviceException e) {
            return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
         }
+    }
+
+    @PostMapping
+    public ResponseEntity realizerAvaliacoes(@RequestBody DadosAvaliacao dados){
+        try {
+            RetornoAvaliacaoCliente retornoAvaliacaoCliente = avaliadorCreditoService.realizarAvaliacao(dados.getCpf(), dados.getRenda());
+            return ResponseEntity.ok(retornoAvaliacaoCliente);
+        } catch (DadosClienteNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (ErroComunicacaoMicroserviceException e) {
+            return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
+        }
+
     }
 }
