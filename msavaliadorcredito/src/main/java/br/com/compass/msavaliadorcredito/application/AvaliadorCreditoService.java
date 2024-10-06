@@ -52,7 +52,7 @@ public class AvaliadorCreditoService {
 
             List<Cartao> cartoes = cartoesResponse.getBody();
             //CONTINUA A PARTIR DAQUI
-            cartoes.stream().map(cartao -> {
+            var listaCartoesAprovados = cartoes.stream().map(cartao -> {
 
                 DadosCliente dadosCliente = dadosClienteResponse.getBody();
 
@@ -69,6 +69,8 @@ public class AvaliadorCreditoService {
 
                 return aprovado;
             }).collect(Collectors.toList());
+
+            return new RetornoAvaliacaoCliente(listaCartoesAprovados);
 
         } catch (FeignException.FeignClientException e){
             int status = e.status();
