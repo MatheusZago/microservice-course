@@ -3,6 +3,8 @@ package br.com.compass.msclientes.application;
 
 import br.com.compass.msclientes.application.representation.ClienteSaveRequest;
 import br.com.compass.msclientes.domain.Cliente;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,6 +17,10 @@ public class ClientesController {
 
     private final ClienteService service;
 
+    //Fazendo um logger
+    private static final Logger log = LoggerFactory.getLogger(ClientesController.class);
+
+
     public ClientesController(ClienteService service) {
         this.service = service;
     }
@@ -22,6 +28,7 @@ public class ClientesController {
     //Apenas para testar se entrou na app ou nn
     @GetMapping
     public String status(){
+        log.info("Obtendo o status do microservice de clientes");
         return "ok";
     }
 

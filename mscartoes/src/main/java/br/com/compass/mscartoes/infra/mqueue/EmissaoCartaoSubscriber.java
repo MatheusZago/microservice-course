@@ -5,14 +5,18 @@ import br.com.compass.mscartoes.domain.ClienteCartao;
 import br.com.compass.mscartoes.domain.DadosSolicitacaoEmissaoCartao;
 import br.com.compass.mscartoes.infra.repository.CartaoRepository;
 import br.com.compass.mscartoes.infra.repository.ClienteCartaoRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EmissaoCartaoSubscriber {
+
+    //Fazendo um logger para essa classe
+    private static final Logger log = LoggerFactory.getLogger(EmissaoCartaoSubscriber.class);
 
     private final CartaoRepository cartaoRepository;
     private final ClienteCartaoRepository clienteCartaoRepository;
@@ -39,7 +43,7 @@ public class EmissaoCartaoSubscriber {
 
             clienteCartaoRepository.save(clienteCartao);
         }catch (Exception e) {
-            e.printStackTrace();
+            log.error("Erro ao receber solicitação de emissão de cartão: {}", e.getMessage());
         }
 
 
