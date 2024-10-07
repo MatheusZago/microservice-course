@@ -17,6 +17,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated() //Todas as requisições tem que estar authenticados com o usuário e senha feita no yml
                 .and()
-                .httpBasic(); /Pra mostrar uma janela pra pedir a senha
+                .httpBasic(); //Pra mostrar uma janela pra pedir a senha
     }
 }
