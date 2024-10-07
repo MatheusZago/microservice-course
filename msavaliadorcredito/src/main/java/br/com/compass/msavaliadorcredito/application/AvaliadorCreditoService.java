@@ -2,9 +2,11 @@ package br.com.compass.msavaliadorcredito.application;
 
 import br.com.compass.msavaliadorcredito.application.ex.DadosClienteNotFoundException;
 import br.com.compass.msavaliadorcredito.application.ex.ErroComunicacaoMicroserviceException;
+import br.com.compass.msavaliadorcredito.application.ex.ErroSolicitacaoCartaoException;
 import br.com.compass.msavaliadorcredito.domain.model.*;
 import br.com.compass.msavaliadorcredito.infra.clients.CartoesResourceClient;
 import br.com.compass.msavaliadorcredito.infra.clients.ClienteResourceClient;
+import br.com.compass.msavaliadorcredito.infra.mqueue.SolicitacaoEmissaoCartaoPublisher;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,10 +22,12 @@ public class AvaliadorCreditoService {
 
     private final ClienteResourceClient clientesClient;
     private final CartoesResourceClient cartoesClient;
+    private final SolicitacaoEmissaoCartaoPublisher emissaoCartaoPublisher;
 
-    public AvaliadorCreditoService(ClienteResourceClient clientesClient, CartoesResourceClient cartoesClient) {
+    public AvaliadorCreditoService(ClienteResourceClient clientesClient, CartoesResourceClient cartoesClient, SolicitacaoEmissaoCartaoPublisher emissaoCartaoPublisher) {
         this.clientesClient = clientesClient;
         this.cartoesClient = cartoesClient;
+        this.emissaoCartaoPublisher = emissaoCartaoPublisher;
     }
 
     public SituacaoCliente obterSituacaoCliente(String cpf) throws DadosClienteNotFoundException, ErroComunicacaoMicroserviceException {
@@ -51,7 +56,6 @@ public class AvaliadorCreditoService {
             ResponseEntity<List<Cartao>> cartoesResponse = cartoesClient.getCartoesRendaAte(renda);
 
             List<Cartao> cartoes = cartoesResponse.getBody();
-            //CONTINUA A PARTIR DAQUI
             var listaCartoesAprovados = cartoes.stream().map(cartao -> {
 
                 DadosCliente dadosCliente = dadosClienteResponse.getBody();
@@ -79,9 +83,17 @@ public class AvaliadorCreditoService {
             }
             throw new ErroComunicacaoMicroserviceException(e.getMessage(), status);
         }
-
-
     }
 
+    public ProtocoloSolicitacaoCartao solicitarPermissaoDeCartao(DadosSolicitacaoEmissaoCartao dados){
+        try{
+            emissaoCartaoPublisher.solicitarCartao(dados);
+            //Gerando protocolo aleatório, apenas para aprendizado
+            var protocolo = UUID.randomUUID().toString();
+            return new ProtocoloSolicitacaoCartao(protocolo);
+        } catch (Exception e) {
+            throw new ErroSolicitacaoCartaoException(e.getMessage());
+        }
+    }
 
 }
