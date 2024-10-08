@@ -13,4 +13,9 @@ WORKDIR /app
 #Vai copiar o jar que vai ser geraod do build para o jar da iamgem
 COPY --from=build ./app/target/*.jar ./app.jar
 EXPOSE 8761
+
+#Argumentos para que sejam usados dinamicamente na conexão
+ARG RABBITMQ_SERVER=rabbitmq-host
+ARG EUREKA_SERVER=locahost
+
 ENTRYPOINT java -jar app.jar
