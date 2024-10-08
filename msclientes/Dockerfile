@@ -17,4 +17,4 @@ EXPOSE 8761
 #Argumentos para que sejam usados dinamicamente na conexão
 ARG EUREKA_SERVER=locahost
 
-ENTRYPOINT java -jar app.jar
+ENTRYPOINT java -jar -Dspring.profiles.active=production app.jar

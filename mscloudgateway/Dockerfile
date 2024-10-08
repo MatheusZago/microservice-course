@@ -19,4 +19,4 @@ ARG EUREKA_SERVER=locahost
 ARG KEYCLOACK_SERVER=localhost
 ARG KEYCLOACK_PORT=8080
 
-ENTRYPOINT java -jar app.jar
+ENTRYPOINT java -jar -Dspring.profiles.active=production app.jar
