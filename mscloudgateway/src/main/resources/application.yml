@@ -11,7 +11,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/mscourserealm
+          issuer-uri: http://${KEYCLOACK_SERVER}:${KEYCLOACK_PORT}/realms/mscourserealm
 
 server:
   port: 8080
@@ -22,4 +22,4 @@ eureka:
     register-with-eureka: true
     service-url:
       #Aqui ele ta entrando no eureka com usuário e senha
-      defaultZone: http://cursoms-eureka-user:ecok-usr-eeuramssur@localhost:8761/eureka
+      defaultZone: http://cursoms-eureka-user:ecok-usr-eeuramssur@${EUREKA_SERVER}:8761/eureka
